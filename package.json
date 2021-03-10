@@ -1,0 +1,22 @@
+{
+  "name": "Moovlah-SDK",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index_bundle.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "loglevel": "^1.7.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
+    "babel-loader": "^8.2.2",
+    "webpack": "^v4.44.2",
+    "webpack-cli": "^4.5.0"
+  }
+}
