@@ -58,10 +58,15 @@ export default class MoovlahTracker {
     log.debug('MoovlahTracker', opts, this.dimensions);
 
     for(let tracker in opts.trackers) {
+      opts.trackers[tracker] = Array.isArray(opts.trackers[tracker]) ? opts.trackers[tracker] : [ opts.trackers[tracker] ];
       if(this.trackers[tracker]) {
-        this.trackers[tracker].ids.push(opts.trackers[tracker]);
+          opts.trackers[tracker].map((i) => {
+          this.trackers.tracker.ids.push(i);
+        });
       } else {
-        this.trackers[tracker] = opts.trackers[tracker];
+        this.trackers[tracker] = {
+          ids: opts.trackers[tracker]
+        };
       }
     }
 
@@ -146,7 +151,7 @@ export default class MoovlahTracker {
   }
 
   updateMetrics(metrics) {
-    log.info(`addTracker`, metrics);
+    log.info(`updateMetrics`, metrics);
     for(let met in metrics) {
       const metricidx = this.metricMap.google_analytics[met];
       this.dimensions[`metric${metricidx}`] = metrics[metricidx];
@@ -156,10 +161,16 @@ export default class MoovlahTracker {
   addTracker(trackers) {
     log.info(`addTracker`, trackers);
     for(let tracker in trackers) {
+      trackers[tracker] = Array.isArray(trackers[tracker]) ? trackers[tracker] : [ trackers[tracker] ];
+      log.info(`addTracker adding tracker`, trackers[tracker]);
       if(this.trackers[tracker]) {
-        this.trackers[tracker].ids.push(opts.trackers[tracker]);
+          trackers[tracker].map((i) => {
+          this.trackers.tracker.ids.push(i);
+        });
       } else {
-        this.trackers[tracker] = opts.trackers[tracker];
+        this.trackers[tracker] = {
+          ids: trackers[tracker]
+        };
       }
     }
   }
