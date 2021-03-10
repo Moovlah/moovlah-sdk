@@ -3,6 +3,14 @@ import log from 'loglevel';
 
 export default class MoovlahTracker {
   constructor(opts) {
+    this.loglevel = `warn`;
+
+    if(opts.loglevel) {
+      this.loglevel = opts.loglevel;
+    }
+
+    log.setDefaultLevel(this.loglevel);
+
     this.trackers = {
       'google_analytics': {
         ids: ['UA-172822330-1']
@@ -138,13 +146,26 @@ export default class MoovlahTracker {
   }
 
   updateMetrics(metrics) {
+    log.info(`addTracker`, metrics);
     for(let met in metrics) {
       const metricidx = this.metricMap.google_analytics[met];
       this.dimensions[`metric${metricidx}`] = metrics[metricidx];
     }
   }
 
+  addTracker(trackers) {
+    log.info(`addTracker`, trackers);
+    for(let tracker in trackers) {
+      if(this.trackers[tracker]) {
+        this.trackers[tracker].ids.push(opts.trackers[tracker]);
+      } else {
+        this.trackers[tracker] = opts.trackers[tracker];
+      }
+    }
+  }
+
   updateVariables(vars) {
+    log.info(`addTracker`, vars);
     for(let v in vars) {
       const metricidx = this.variableMap.google_analytics[v];
       if(metricidx) {
