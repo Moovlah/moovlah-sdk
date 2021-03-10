@@ -61,7 +61,7 @@ export default class MoovlahTracker {
       opts.trackers[tracker] = Array.isArray(opts.trackers[tracker]) ? opts.trackers[tracker] : [ opts.trackers[tracker] ];
       if(this.trackers[tracker]) {
           opts.trackers[tracker].map((i) => {
-          this.trackers.tracker.ids.push(i);
+          this.trackers[tracker].ids.push(i);
         });
       } else {
         this.trackers[tracker] = {
@@ -165,7 +165,7 @@ export default class MoovlahTracker {
       log.info(`addTracker adding tracker`, trackers[tracker]);
       if(this.trackers[tracker]) {
           trackers[tracker].map((i) => {
-          this.trackers.tracker.ids.push(i);
+          this.trackers[tracker].ids.push(i);
         });
       } else {
         this.trackers[tracker] = {
