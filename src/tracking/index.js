@@ -30,7 +30,7 @@ export default class MoovlahTracker {
         `mute`,
         `universal_ad_id`,
         `play_id`,
-        `content_name`,
+        `universal_ad_id_registry`,
         `error_code`,
         `error_message`,
         `placement_domain`,
