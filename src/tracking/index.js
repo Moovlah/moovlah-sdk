@@ -141,10 +141,6 @@ export default class MoovlahTracker {
     return window[window.GoogleAnalyticsObject]
   }
 
-  get _gtag() {
-    return window.dataLayer
-  }
-
   get _gaDimensions() {
     let dims = {};
     for(let i = 1; i < this.dimensionsMap.google_analytics.length; i++) {
