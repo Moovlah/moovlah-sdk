@@ -89,7 +89,8 @@ const GtagSnippet = function(MEASUREMENT_ID, debug=false, trace=false) {
       gtag('js', new Date());
       MEASUREMENT_ID.map((i) => {
         gtag('config', MEASUREMENT_ID);
-      })
+      });
+      resolve(gtag);
     });
     script.onerror = reject('error loading GA');
     first.parentNode.insertBefore(script, first);
