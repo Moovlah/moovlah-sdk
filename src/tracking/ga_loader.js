@@ -86,10 +86,11 @@ const GtagSnippet = function(MEASUREMENT_ID, debug=false, trace=false) {
     script.onload = resolve((e) => {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      MEASUREMENT_ID.map((i) => {
-        gtag('config', MEASUREMENT_ID);
-      });
+        gtag('js', new Date());
+        MEASUREMENT_ID.map((i) => {
+          log.info(`configuring id`, i)
+          gtag('config', i);
+        });
       resolve(gtag);
     });
     script.onerror = reject('error loading GA');
