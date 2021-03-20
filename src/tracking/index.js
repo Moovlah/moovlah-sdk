@@ -88,15 +88,11 @@ export default class MoovlahTracker {
       }
       switch(tracker) {
         case 'gtag':
-          GtagSnippet()
+          GtagSnippet(tracker.ids)
           .then((c) => {
             log.debug('loading gtag', c);
             this._gtag = c;
             this.trackers[tracker].tracker = this._gtag;
-            log.debug('loaded', this.trackers[tracker].tracker, this.trackers[tracker].ids);
-            this.trackers[tracker].tracker('create', this.trackers[tracker].ids[0], `Moovlah_${tracker}`, {
-              storage: 'none'
-            });
           })
           .catch((err) => {
             log.error('Error loading GA', err);
