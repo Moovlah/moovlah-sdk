@@ -3,7 +3,7 @@ import log from 'loglevel';
 
 export default class MoovlahTracker {
   constructor(opts) {
-    this.loglevel = `warn`;
+    this.loglevel = `debug`;
 
     if(opts.loglevel) {
       this.loglevel = opts.loglevel;
