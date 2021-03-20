@@ -74,6 +74,10 @@ export default class MoovlahTracker {
     }
 
     for(let tracker in this.trackers) {
+      if(this.trackers[tracker].length === 0) {
+        log.info('empty tracker array so skipping', tracker);
+        continue;
+      }
       switch(tracker) {
         case 'gtag':
           GtagSnippet()
@@ -205,6 +209,10 @@ export default class MoovlahTracker {
   trackEvent(obj) {
     obj = {...obj,...this._gaDimensions};
     for(let tracker in this.trackers) {
+      if(this.trackers[tracker].length === 0) {
+        log.info('empty tracker array so skipping', tracker);
+        continue;
+      }
       switch(tracker) {
         case 'google_analytics':
           log.info('ga tracker', this.trackers[tracker]);
