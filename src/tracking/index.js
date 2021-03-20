@@ -61,6 +61,7 @@ export default class MoovlahTracker {
     log.debug('MoovlahTracker', opts, this.dimensions);
 
     for(let tracker in opts.trackers) {
+
       opts.trackers[tracker] = Array.isArray(opts.trackers[tracker]) ? opts.trackers[tracker] : [ opts.trackers[tracker] ];
       if(this.trackers[tracker]) {
           opts.trackers[tracker].map((i) => {
@@ -74,9 +75,11 @@ export default class MoovlahTracker {
     }
 
     for(let tracker in this.trackers) {
-      if(this.trackers[tracker].length === 0) {
+      if(!this.trackers[tracker] || this.trackers[tracker].ids.length === 0) {
         log.info('empty tracker array so skipping', tracker);
         continue;
+      } else {
+        log.info('have tracker ' + tracker , this.trackers[tracker].ids.length);
       }
       switch(tracker) {
         case 'gtag':
@@ -209,9 +212,11 @@ export default class MoovlahTracker {
   trackEvent(obj) {
     obj = {...obj,...this._gaDimensions};
     for(let tracker in this.trackers) {
-      if(this.trackers[tracker].length === 0) {
+      if(!this.trackers[tracker] || this.trackers[tracker].ids.length === 0) {
         log.info('empty tracker array so skipping', tracker);
         continue;
+      } else {
+        log.info('have tracker ' + tracker , this.trackers[tracker].ids.length);
       }
       switch(tracker) {
         case 'google_analytics':
