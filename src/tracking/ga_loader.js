@@ -1,6 +1,6 @@
 // Based on Google Analytics JavaScript Tracking Snippet
 // See original @ https://developers.google.com/analytics/devguides/collection/analyticsjs/tracking-snippet-reference
-
+import log from 'loglevel';
 /**
  * Creates a temporary global ga object and lazy loads analytics.js.
  * @function
