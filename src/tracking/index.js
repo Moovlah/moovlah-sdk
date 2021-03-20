@@ -1,4 +1,4 @@
-import gaTrackingSnippet from './ga_loader';
+import { UASnippet, GtagSnippet } from './ga_loader';
 import log from 'loglevel';
 
 export default class MoovlahTracker {
@@ -14,7 +14,10 @@ export default class MoovlahTracker {
     this.trackers = {
       'google_analytics': {
         ids: ['UA-172822330-1']
-      }
+      },
+      'gtag': {
+        ids: ['G-JJLJFMKR04']
+      },
     };
     this.dimensionsMap = {
       google_analytics: [
@@ -72,10 +75,23 @@ export default class MoovlahTracker {
 
     for(let tracker in this.trackers) {
       switch(tracker) {
-        case 'google_analytics':
-          gaTrackingSnippet()
+        case 'gtag':
+          UASnippet()
           .then((c) => {
-            log.debug('loading', c);
+            log.debug('loading gtag', c);
+            this.trackers[tracker].tracker = this._ga;
+            log.debug('loaded', this.trackers[tracker].tracker, this.trackers[tracker].ids);
+            this.trackers[tracker].tracker('create', this.trackers[tracker].ids[0], `Moovlah_${tracker}`, {
+              storage: 'none'
+            });
+          })
+          .catch((err) => {
+            log.error('Error loading GA', err);
+          })
+        case 'google_analytics':
+          GtagSnippet()
+          .then((c) => {
+            log.debug('loading ua', c);
             this.trackers[tracker].tracker = this._ga;
             log.debug('loaded', this.trackers[tracker].tracker, this.trackers[tracker].ids);
             this.trackers[tracker].tracker('create', this.trackers[tracker].ids[0], `Moovlah_${tracker}`, {
@@ -122,6 +138,10 @@ export default class MoovlahTracker {
 
   get _ga() {
     return window[window.GoogleAnalyticsObject]
+  }
+
+  get _gtag() {
+    return window.dataLayer
   }
 
   get _gaDimensions() {
@@ -190,13 +210,20 @@ export default class MoovlahTracker {
     for(let tracker in this.trackers) {
       switch(tracker) {
         case 'google_analytics':
-          log.info('tracker', this.trackers[tracker]);
+          log.info('ga tracker', this.trackers[tracker]);
           if (this.trackers[tracker]._gaBeacon) {
             obj.transport = 'beacon';
             this.trackers[tracker]._gaBeacon = false;
           }
           this._ga(`send`, `event`, obj);
           break;
+        case 'gtag':
+          log.info('gtag tracker', this.trackers[tracker]);
+          const dims = this._gaDimensions;
+          dims.event_category = obj.eventCategory;
+          dims.event_value = obj.eventValue;
+          dims.event_label = obj.eventLabel;
+          gtag('event', obj.eventAction, dims);
       }
     }
   }
