@@ -16,7 +16,7 @@ export default class MoovlahTracker {
         ids: ['UA-172822330-1']
       },
       'gtag': {
-        //ids: ['G-JJLJFMKR04']
+        ids: []
       },
     };
     this.dimensionsMap = {
