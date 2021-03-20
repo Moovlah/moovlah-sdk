@@ -13,7 +13,7 @@ export default class MoovlahTracker {
 
     this.trackers = {
       'google_analytics': {
-        ids: ['UA-172822330-1']
+        ids: []
       },
       'gtag': {
         ids: []
