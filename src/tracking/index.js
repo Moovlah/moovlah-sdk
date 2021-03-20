@@ -128,7 +128,7 @@ export default class MoovlahTracker {
   broadcastGoogleAnalytics(tracker) {
     log.debug('broadcastGoogleAnalytics', tracker);
     this.trackers['google_analytics'].originalSendHitTask = tracker.get('sendHitTask');
-    // tracker.set('sendHitTask', this.customGaSendHitTask.bind(this));
+    tracker.set('sendHitTask', this.customGaSendHitTask.bind(this));
   }
 
   customGaSendHitTask(model) {
