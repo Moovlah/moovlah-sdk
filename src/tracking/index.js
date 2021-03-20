@@ -87,8 +87,8 @@ export default class MoovlahTracker {
       }
       switch(tracker) {
         case 'gtag':
-          log.info('gtag', tracker.ids)
-          GtagSnippet(tracker.ids)
+          log.info('gtag', this.trackers[tracker].ids)
+          GtagSnippet(this.trackers[tracker].ids)
           .then((c) => {
             log.debug('loading gtag', c);
             this._gtag = c;
