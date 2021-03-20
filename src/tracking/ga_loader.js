@@ -51,7 +51,7 @@ const UASnippet = function(name='ga', debug=false, trace=false) {
   });
 }
 
-const GtagSnippet = function(MEASUREMENT_ID, debug=false, trace=false) {
+const GtagSnippet = function(MEASUREMENT_ID) {
   // Preserve renaming support and minification
   log.info(`GtagSnippet`, MEASUREMENT_ID);
   MEASUREMENT_ID = Array.isArray(MEASUREMENT_ID) ? MEASUREMENT_ID : [ MEASUREMENT_ID ];
@@ -65,17 +65,24 @@ const GtagSnippet = function(MEASUREMENT_ID, debug=false, trace=false) {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID[0]}`;
     script.async = true;
     //if (typeof cb === 'function') script.onload = () => { onLoad(true); }
-    script.onload = resolve((e) => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        MEASUREMENT_ID.map((i) => {
-          log.info(`configuring gtag id`, i)
-          gtag('config', i);
-        });
+    script.onload = ((e) => {
+      log.debug(`gTag onLoad`, e);
+      win.dataLayer = win.dataLayer || [];
+      function gtag(){
+        log.debug('gtag', arguments);
+        win.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      MEASUREMENT_ID.map((i) => {
+        log.info(`configuring gtag id`, i)
+        gtag('config', i);
+      });
       resolve(gtag);
     });
-    script.onerror = reject('error loading GTAG');
+    script.onerror = ((err) => {
+      console.error(err);
+      reject(err);
+    });
     first.parentNode.insertBefore(script, first);
   });
 }

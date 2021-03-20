@@ -97,6 +97,7 @@ export default class MoovlahTracker {
           .catch((err) => {
             log.error('Error loading GA', err);
           })
+          break;
         case 'google_analytics':
           UASnippet()
           .then((c) => {
@@ -153,7 +154,7 @@ export default class MoovlahTracker {
     let dims = {};
     for(let i = 1; i < this.dimensionsMap.google_analytics.length; i++) {
       //default to `0` so reports don't omit rows on empty data
-      log.info(`dim`, this.dimensions, i)
+      // log.info(`dim`, this.dimensions, i)
       dims[`dimension${i}`] = this.dimensions[this.dimensionsMap.google_analytics[i]] || `0`
       dims[`dimension${i}`] = dims[`dimension${i}`].toString()
     }
@@ -223,6 +224,7 @@ export default class MoovlahTracker {
       } else {
         log.info('have tracker ' + tracker , this.trackers[tracker].ids.length);
       }
+      let dims;
       switch(tracker) {
         case 'google_analytics':
           log.info('ga tracker', this.trackers[tracker]);
@@ -234,11 +236,12 @@ export default class MoovlahTracker {
           break;
         case 'gtag':
           log.info('gtag tracker', this.trackers[tracker]);
-          const dims = this._gaDimensions;
+          dims = this._gaDimensions;
           dims.event_category = obj.eventCategory;
           dims.event_value = obj.eventValue;
           dims.event_label = obj.eventLabel;
           this._gtag('event', obj.eventAction, dims);
+          break;
       }
     }
   }
