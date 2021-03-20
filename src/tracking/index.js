@@ -216,7 +216,7 @@ export default class MoovlahTracker {
   trackEvent(obj) {
     obj = {...obj,...this._gaDimensions};
     for(let tracker in this.trackers) {
-      if(!this.trackers[tracker] || this.trackers[tracker].ids){
+      if(!this.trackers[tracker] || !this.trackers[tracker].ids){
         log.info('empty tracker so skipping', tracker);
         continue;
       }
