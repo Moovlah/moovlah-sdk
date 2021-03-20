@@ -59,6 +59,7 @@ const GtagSnippet = function(MEASUREMENT_ID, debug=false, trace=false) {
   return new Promise(function(resolve, reject) {
     // Insert script element above the first script element in document
     // (async + https)
+    let win = window, doc = document, el = 'script';
     let first = doc.getElementsByTagName(el)[0];
     let script = doc.createElement(el);
     script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID[0]}`;
