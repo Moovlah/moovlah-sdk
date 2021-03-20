@@ -75,7 +75,11 @@ export default class MoovlahTracker {
     }
 
     for(let tracker in this.trackers) {
-      if(!this.trackers[tracker] || this.trackers[tracker].ids.length === 0) {
+      if(!this.trackers[tracker]){
+        log.info('empty tracker so skipping', tracker);
+        continue;
+      }
+      if(this.trackers[tracker].ids.length === 0) {
         log.info('empty tracker array so skipping', tracker);
         continue;
       } else {
@@ -212,7 +216,11 @@ export default class MoovlahTracker {
   trackEvent(obj) {
     obj = {...obj,...this._gaDimensions};
     for(let tracker in this.trackers) {
-      if(!this.trackers[tracker] || this.trackers[tracker].ids.length === 0) {
+      if(!this.trackers[tracker]){
+        log.info('empty tracker so skipping', tracker);
+        continue;
+      }
+      if(this.trackers[tracker].ids.length === 0) {
         log.info('empty tracker array so skipping', tracker);
         continue;
       } else {
