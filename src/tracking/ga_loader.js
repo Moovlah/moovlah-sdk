@@ -9,7 +9,7 @@ import log from 'loglevel';
  * @param {boolean} Set to true to enable trace debugging.
  */
 
-log.setDefaultLevel('debug');
+log.setDefaultLevel('warn');
 
 const UASnippet = function(name='ga', debug=false, trace=false) {
   // Preserve renaming support and minification
