@@ -41,7 +41,28 @@ export default class MoovlahTracker {
         `ad_unit_id`,
         `ad_id`,
         `ad_query_id`
-      ]
+      ],
+      gtag: {
+        player_id: null,
+        content_id: null,
+        floating: null,
+        placement_id: null,
+        distribution_id: null,
+        user_id: null,
+        player_type: null,
+        embedtype: null,
+        mute: null,
+        universal_ad_id: null,
+        play_id: null,
+        universal_ad_id_registry: null,
+        error_code: null,
+        error_message: null,
+        placement_domain: null,
+        ad_network_id: null,
+        ad_unit_id: null,
+        ad_id: null,
+        ad_query_id: null
+      }
     };
     this.metricsMap = {
       google_analytics: [
@@ -158,7 +179,35 @@ export default class MoovlahTracker {
       dims[`dimension${i}`] = this.dimensions[this.dimensionsMap.google_analytics[i]] || `0`
       dims[`dimension${i}`] = dims[`dimension${i}`].toString()
     }
-    log.info('dims', dims);
+    log.info('ga dims', dims);
+    return dims;
+  }
+
+  get _gTagDimensions() {
+    let dims = {};
+    for(let d in this.dimensionsMap.gtag) {
+      //default to `0` so reports don't omit rows on empty data
+      // log.info(`dim`, this.dimensions, i)
+      switch(d) {
+        case 'autoplay':
+          dims['play_strategy'] = this.dimensions[d] ? 'autoplay' : 'click to play';
+          break;
+        case 'floating':
+          dims['embed_type'] = this.dimensions[d] ? 'floating' : 'fixed';
+          break;
+        case 'ad_unit_id':
+          dims['ad_unit'] = this.dimensions[d] || null;
+          break;
+        case 'embedtype':
+          dims['player_tech'] = this.dimensions[d] || null;
+          break;
+        default:
+          dims[d] = this.dimensions[d] || null;
+          break;
+      }
+
+    }
+    log.info('gtag dims', dims);
     return dims;
   }
 
@@ -236,7 +285,11 @@ export default class MoovlahTracker {
           break;
         case 'gtag':
           log.info('gtag tracker', this.trackers[tracker]);
-          dims = this._gaDimensions;
+          dims = this._gTagDimensions;
+          log.info(dims);
+          if(dims.error_code) {
+            dims.error_type = obj.eventCategory;
+          }
           dims.event_category = obj.eventCategory;
           dims.event_value = obj.eventValue;
           dims.event_label = obj.eventLabel;
