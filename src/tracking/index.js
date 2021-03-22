@@ -46,6 +46,7 @@ export default class MoovlahTracker {
       gtag: {
         player_id: null,
         content_id: null,
+        content_name: null,
         floating: null,
         placement_id: null,
         distribution_id: null,
