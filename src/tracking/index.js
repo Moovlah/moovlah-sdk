@@ -33,7 +33,7 @@ export default class MoovlahTracker {
         `embedtype`,
         `universal_ad_id`,
         `play_id`,
-        `video_title`,
+        `content_name`,
         `universal_ad_id_registry`,
         `error_code`,
         `error_message`,
