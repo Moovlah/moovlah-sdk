@@ -81,21 +81,27 @@ export default class MoovlahTracker {
     this.variables = opts.variables || {};
     this.player = opts.player;
 
+    this.eventsQueue = [];
+
     log.debug('MoovlahTracker', opts, this.dimensions);
 
     for(let tracker in opts.trackers) {
 
       opts.trackers[tracker] = Array.isArray(opts.trackers[tracker]) ? opts.trackers[tracker] : [ opts.trackers[tracker] ];
       if(this.trackers[tracker]) {
+          this.trackers[tracker].eventQueue = [];
           opts.trackers[tracker].map((i) => {
           this.trackers[tracker].ids.push(i);
         });
       } else {
         this.trackers[tracker] = {
-          ids: opts.trackers[tracker]
+          ids: opts.trackers[tracker],
+          eventQueue: []
         };
       }
     }
+
+    console.warn(`trackers`, this.trackers);
 
     for(let tracker in this.trackers) {
       if(!this.trackers[tracker] || !this.trackers[tracker].ids){
@@ -116,6 +122,16 @@ export default class MoovlahTracker {
             log.debug('loading gtag', c);
             this._gtag = c;
             this.trackers[tracker].tracker = this._gtag;
+            console.info(`gtag loaded`);
+            if(this._ga) {
+              console.warn(`ga and gtag loaded`, this.trackers[tracker].eventQueue.length);
+              const q = this.trackers[tracker].eventQueue;
+              this.trackers[tracker].eventQueue = [];
+              while (q.length > 0) {
+                 log.info(`tracking queued event`);
+                 this.trackEvent(q.shift());
+              }
+            }
           })
           .catch((err) => {
             log.error('Error loading GA', err);
@@ -141,6 +157,16 @@ export default class MoovlahTracker {
             */
 
             this.trackers[tracker].tracker('send', 'pageview', this._gaDimensions);
+            console.warn(`ga loaded`);
+            if(this._gtag) {
+              console.warn(`ga and gtag loaded`, this.trackers[tracker].eventQueue);
+              const q = this.trackers[tracker].eventQueue;
+              this.trackers[tracker].eventQueue = [];
+              while (q.length > 0) {
+                 log.info(`tracking queued event`);
+                 this.trackEvent(q.shift());
+              }
+            }
           })
           .catch((err) => {
             log.error('Error loading GA', err);
@@ -279,6 +305,11 @@ export default class MoovlahTracker {
       switch(tracker) {
         case 'google_analytics':
           log.info('ga tracker', this.trackers[tracker]);
+          if(!this._ga) {
+            console.warn(`UA not loaded so queueing`);
+            this.trackers[tracker].eventQueue.push(obj);
+            return;
+          }
           if (this.trackers[tracker]._gaBeacon) {
             obj.transport = 'beacon';
             this.trackers[tracker]._gaBeacon = false;
@@ -287,6 +318,11 @@ export default class MoovlahTracker {
           break;
         case 'gtag':
           log.info('gtag tracker', this.trackers[tracker]);
+          if(!this._gtag) {
+            console.warn(`Gtag not loaded so queueing`);
+            this.trackers[tracker].eventQueue.push(obj);
+            return;
+          }
           dims = this._gTagDimensions;
           log.info(dims);
           if(dims.error_code) {
