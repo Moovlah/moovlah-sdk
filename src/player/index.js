@@ -107,7 +107,7 @@ export default class MoovlahPlayer {
     })();
 
     this.getConfiguration();
-    this.initPlayer();
+    //this.initPlayer();
 
     this.log.debug(`have config`, this.playerSettings.placement);
 
