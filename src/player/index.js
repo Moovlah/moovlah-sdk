@@ -25,67 +25,67 @@ const serializeParams = (obj, prefix) => {
 
 export default class MoovlahPlayer {
 
-  intersectionSettings = {
-    threshold: [0, 0.2],
-    rootMargin: `0px 0px 0px 0px`
-  };
-
-  playerSettings = {
-    embedTag: null,
-    placement: ``
-  };
-
-  logSettings = {
-    logLevel: `debug`
-  };
-
-  scriptTag = null;
-
-  intersectionObserver = null;
-  messageBus = null;
-
-  firstVisible = false;
-
-  log = log;
-
-  playerStyles = {
-    responsiveContainerStyle: `position: relative;padding-bottom: 56.25%;height: 0;overflow: hidden;text-align:center;`,
-    responsiveFrameStyle: `position: absolute;top: 0;left: 0;width: 100%;height: 100%;`,
-    floatingFrameStyle: `box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20); position: fixed; right: 20px; bottom: 20px; top: auto; left: auto; max-width: 280px; max-height: 158px; width: 280px; height: 158px;`,
-    floatingFrameStyleBottomLeft: `left: 20px; right: auto; bottom: 20px; top: auto;`,
-    floatingFrameStyleBottomRight: `right: 20px; left: auto; bottom: 20px; top: auto;`,
-    floatingFrameStyleTopLeft: `left: 20px; right: auto; top: 20px; bottom: auto;`,
-    floatingFrameStyleTopRight: `right: 20px; left: auto; top: 20px; bottom: auto;`,
-    floatingFrameStyleMiddleLeft: `left: 20px; right: auto; bottom: 50%; top: auto;`,
-    floatingFrameStyleMiddleRight: `right: 20px; left: auto; bottom: 50%; top: auto;`,
-    closeButton: `position: absolute; display: block; right: 5px; bottom: auto; top: 5px; left: auto; cursor: pointer; fill: rgba(0,0,0,1); height: 24px; width: 24px;`
-  };
-
-  allowableParams = [
-      `anchorCorner`,
-      `autoPlay`,
-      `config`,
-      `configurationKey`,
-      `target`,
-      `targetElement`,
-      `clip`,
-      `sticky`,
-      `scrollToPlay`,
-      `mute`,
-      `playsInline`,
-      `videoFormat`,
-      `singlePlayer`,
-      `shuffle`,
-      `adTagOverride`,
-      `searchContext`,
-      `ignoreAdBlocker`,
-      `deferToOVP`,
-  ];
-
   constructor(opts) {
 
-    foreach(let section in opts) {
-      foreach(let setting in opts[section]) {
+    this.intersectionSettings = {
+      threshold: [0, 0.2],
+      rootMargin: `0px 0px 0px 0px`
+    };
+
+    this.playerSettings = {
+      embedTag: null,
+      placement: ``
+    };
+
+    this.logSettings = {
+      logLevel: `debug`
+    };
+
+    this.scriptTag = null;
+
+    this.intersectionObserver = null;
+    this.messageBus = null;
+
+    this.firstVisible = false;
+
+    this.log = log;
+
+    this.playerStyles = {
+      responsiveContainerStyle: `position: relative;padding-bottom: 56.25%;height: 0;overflow: hidden;text-align:center;`,
+      responsiveFrameStyle: `position: absolute;top: 0;left: 0;width: 100%;height: 100%;`,
+      floatingFrameStyle: `box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20); position: fixed; right: 20px; bottom: 20px; top: auto; left: auto; max-width: 280px; max-height: 158px; width: 280px; height: 158px;`,
+      floatingFrameStyleBottomLeft: `left: 20px; right: auto; bottom: 20px; top: auto;`,
+      floatingFrameStyleBottomRight: `right: 20px; left: auto; bottom: 20px; top: auto;`,
+      floatingFrameStyleTopLeft: `left: 20px; right: auto; top: 20px; bottom: auto;`,
+      floatingFrameStyleTopRight: `right: 20px; left: auto; top: 20px; bottom: auto;`,
+      floatingFrameStyleMiddleLeft: `left: 20px; right: auto; bottom: 50%; top: auto;`,
+      floatingFrameStyleMiddleRight: `right: 20px; left: auto; bottom: 50%; top: auto;`,
+      closeButton: `position: absolute; display: block; right: 5px; bottom: auto; top: 5px; left: auto; cursor: pointer; fill: rgba(0,0,0,1); height: 24px; width: 24px;`
+    };
+
+    this.allowableParams = [
+        `anchorCorner`,
+        `autoPlay`,
+        `config`,
+        `configurationKey`,
+        `target`,
+        `targetElement`,
+        `clip`,
+        `sticky`,
+        `scrollToPlay`,
+        `mute`,
+        `playsInline`,
+        `videoFormat`,
+        `singlePlayer`,
+        `shuffle`,
+        `adTagOverride`,
+        `searchContext`,
+        `ignoreAdBlocker`,
+        `deferToOVP`,
+    ];
+
+    for(let section in opts) {
+      for(let setting in opts[section]) {
         if(this[section].hasOwnProperty(setting)) {
           this[section][setting] = opts[section][setting];
         }
@@ -113,7 +113,7 @@ export default class MoovlahPlayer {
 
   }
 
-  this.createPlayerElements() {
+  createPlayerElements() {
     this.container = document.createElement(`div`);
     this.frameHolder = document.createElement(`div`);
     this.container.appendChild(frameHolder);
@@ -215,9 +215,10 @@ export default class MoovlahPlayer {
 
   showPosterPlaceholder() {
     this.log.info(`showPosterPlaceholder`, this.playerSettings.playlist);
+
   }
 
-  activateStickiness() => {
+  activateStickiness() {
     this.log.info(`activateStickiness`);
     this.intersectionObserver = new IntersectionObserver(entries => {
         // If the browser is busy while scrolling happens, multiple entries can
