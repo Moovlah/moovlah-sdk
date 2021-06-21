@@ -10,7 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "loglevel": "^1.7.1"
+    "element-is-visible": "^1.0.0",
+    "just-detect-adblock": "^1.1.0",
+    "loglevel": "^1.7.1",
+    "simple-load-script": "^1.0.3",
+    "vast-client": "^3.1.1",
+    "video.js": "^7.0.3",
+    "withinviewport": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
